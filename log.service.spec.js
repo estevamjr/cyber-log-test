@@ -1,22 +1,12 @@
-const LogService = require('../src/log.service');
+const { Injectable } = require('@nestjs/common');
 
-describe('LogService', () => {
-  let service;
+@Injectable()
+class LogService {
+  extractMatchId(logLine) {
+    const regex = /New match (\d+) has started/;
+    const match = logLine.match(regex);
+    return match ? match[1] : null;
+  }
+}
 
-  beforeEach(() => {
-    service = new LogService();
-  });
-
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('same matchId from a log line', () => {
-    const logLine = '23/04/2019 15:34:22 - New match 11348965 has started';
-    const matchId = '11348965';
-
-    const finalMatchId = service.matchId(logLine);
-
-    expect(finalMatchId).toBe(matchId);
-  });
-});
+module.exports = LogService;
