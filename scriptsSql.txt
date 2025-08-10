@@ -1,0 +1,58 @@
+-- --
+-- -- Tabela principal para armazenar os dados de cada partida
+-- --
+-- CREATE TABLE IF NOT EXISTS public.matches (
+--     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--     match_id TEXT NOT NULL UNIQUE,
+--     start_time TIMESTAMP WITH TIME ZONE,
+--     end_time TIMESTAMP WITH TIME ZONE
+-- );
+
+-- --
+-- -- Tabela para controlar os jogadores e suas estatísticas de cada partida
+-- --
+-- CREATE TABLE IF NOT EXISTS public.players (
+--     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--     match_id UUID REFERENCES public.matches(id) ON DELETE CASCADE,
+--     player_name TEXT NOT NULL,
+--     frags INTEGER NOT NULL DEFAULT 0,
+--     deaths INTEGER NOT NULL DEFAULT 0,
+--     UNIQUE (match_id, player_name)
+-- );
+
+-- --
+-- -- Tabela para rastrear os bônus e prêmios de cada jogador
+-- --
+-- CREATE TABLE IF NOT EXISTS public.bonuses (
+--     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--     player_id UUID REFERENCES public.players(id) ON DELETE CASCADE,
+--     match_id UUID REFERENCES public.matches(id) ON DELETE CASCADE,
+--     bonus_type TEXT NOT NULL,
+--     bonus_description TEXT,
+--     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- );
+
+-- --
+-- -- Tabela para armazenar os eventos de mortes de forma consolidada (opcional, pode ser feito via JSONB)
+-- --
+-- CREATE TABLE IF NOT EXISTS public.kills (
+--     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--     match_id UUID REFERENCES public.matches(id) ON DELETE CASCADE,
+--     killer_name TEXT NOT NULL,
+--     victim_name TEXT NOT NULL,
+--     weapon TEXT NOT NULL,
+--     kill_time TIMESTAMP WITH TIME ZONE
+-- );
+
+-- --
+-- -- Tabela para agregar as estatísticas de todos os jogadores
+-- --
+-- CREATE TABLE IF NOT EXISTS public.global_player_stats (
+--     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--     player_name TEXT NOT NULL UNIQUE,
+--     total_frags INTEGER NOT NULL DEFAULT 0,
+--     total_deaths INTEGER NOT NULL DEFAULT 0,
+--     awards_won INTEGER NOT NULL DEFAULT 0
+-- );
+
+TRUNCATE TABLE matches RESTART IDENTITY;
