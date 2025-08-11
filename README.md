@@ -1,98 +1,119 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+Markdown
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# 🚀 Processador de Logs de Partidas
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 1. Visão Geral do Projeto
+Esta é uma aplicação backend robusta, construída com NestJS (Node.js), projetada para ser uma solução completa no processamento e análise de logs de partidas de jogos de tiro em primeira pessoa (FPS). [cite_start]🎮 
 
-## Description
+A API permite o upload de arquivos de log, processa os dados para extrair estatísticas detalhadas de cada partida e dos jogadores, persiste esses relatórios em um banco de dados PostgreSQL e expõe os resultados através de múltiplos endpoints para consulta e análise. É ideal para integração com ferramentas de Business Intelligence (BI) ou frontends interativos. [cite_start]📊 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+O projeto foi desenvolvido com foco em Test-Driven Development (TDD), garantindo a qualidade e a corretude das regras de negócio. Isso inclui desde o cálculo de rankings por partida até a implementação de funcionalidades complexas como "kill streaks", "awards" (prêmios por desempenho) e a detecção de "friendly fire". [cite_start]✅ 
 
-## Project setup
+## 2. Tecnologias Utilizadas
+Um olhar sobre as ferramentas que impulsionam este projeto:
 
+* [cite_start]**Backend:** Node.js, NestJS 
+* [cite_start]**Banco de Dados:** PostgreSQL (gerenciado via Supabase) 🐘 
+* [cite_start]**ORM:** TypeORM 
+* [cite_start]**Testes:** Jest (para testes unitários e E2E), Supertest 
+* [cite_start]**Variáveis de Ambiente:** Dotenv 
+
+## 3. Como Executar o Projeto
+Siga estes passos para colocar a aplicação em funcionamento em sua máquina local:
+
+### Pré-requisitos
+Certifique-se de ter instalado:
+
+* [cite_start]Node.js (v18 ou superior) 🟢 
+* [cite_start]npm (gerenciador de pacotes do Node.js) 
+* [cite_start]Uma instância de banco de dados PostgreSQL (local ou em nuvem como Supabase) 
+
+### Passos para Instalação
+1.  **Clonar o repositório:**
+    ```bash
+    git clone [URL_DO_SEU_REPOSITORIO]
+    cd [NOME_DA_PASTA]
+    ```
+
+2.  **Instalar dependências:**
+    ```bash
+    npm install
+    ```
+    *Nota: Devido a conflitos em dependências de desenvolvimento, pode ser necessário usar o comando `npm install --legacy-peer-deps`.*
+
+3.  **Configurar Variáveis de Ambiente:**
+    Crie um arquivo chamado `.env` na raiz do projeto e preencha com suas credenciais do banco de dados:
+    ```env
+    POSTGRES_HOST=seu_host_do_banco
+    POSTGRES_PORT=5432
+    POSTGRES_USER=seu_usuario
+    POSTGRES_PASSWORD=sua_senha
+    POSTGRES_DB=seu_banco
+    ```
+
+4.  **Iniciar a aplicação em modo de desenvolvimento:**
+    ```bash
+    npm run start:dev
+    ```
+    O servidor estará disponível em `http://localhost:3000`. 🚀
+
+### Rodando os Testes
+Para garantir a integridade e a qualidade do código, execute a suíte de testes unitários e E2E:
 ```bash
-$ npm install
-```
+npm test
+4. Endpoints da API
+Explore as funcionalidades da API através dos seguintes endpoints. A documentação interativa (Swagger UI) estará disponível em http://localhost:3000/api-docs após a aplicação ser iniciada. 📖 
 
-## Compile and run the project
 
-```bash
-# development
-$ npm run start
+POST /logs/upload 
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
-```
+GET /logs/matches 
 
-## Run tests
 
-```bash
-# unit tests
-$ npm run test
+GET /logs/matches/:id 
 
-# e2e tests
-$ npm run test:e2e
 
-# test coverage
-$ npm run test:cov
-```
+GET /logs/ranking/global 
 
-## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+GET /logs/matches/mvp 
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+5. Documentação da API (Swagger)
+Para uma documentação completa, o projeto inclui duas especificações no formato Swagger 2.0, que foram movidas para a pasta /docs para melhor organização:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+docs/mvpSwagger.json (Versão Atual):
+Este arquivo representa a API como ela está atualmente implementada e funcional no repositório. Ele documenta todos os endpoints, parâmetros e modelos de dados que foram desenvolvidos e testados. 
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+docs/roadmapSwagger.json (Visão Futura):
+Este arquivo serve como um documento de design técnico, descrevendo a visão para a evolução da API. Ele incorpora as melhorias planejadas no "Roadmap de Melhorias Técnicas", incluindo segurança OAuth 2.0, paginação e tratamento de erros detalhado. 
 
-## Resources
+6. Decisões de Arquitetura
+Este projeto foi cuidadosamente construído com base em princípios sólidos de engenharia de software, visando a qualidade, manutenibilidade e testabilidade do código. 🏗️ 
 
-Check out a few resources that may come in handy when working with NestJS:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Arquitetura em Camadas (SOLID): A aplicação é rigidamente dividida em camadas claras (Controller, Service, Repository), seguindo o Princípio da Responsabilidade Única. 
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Test-Driven Development (TDD): Todo o desenvolvimento da lógica de negócio foi guiado por testes, com cobertura para testes unitários e de ponta-a-ponta (E2E). 
 
-## Stay in touch
+Modelo de Dados Flexível: A decisão estratégica de armazenar o relatório completo de cada partida em uma única coluna jsonb no PostgreSQL oferece uma flexibilidade notável, permitindo a adição de novas métricas sem a necessidade de migrações complexas no esquema do banco. 🔄 
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+7. Roadmap de Melhorias Técnicas
+Como parte de uma visão de produto contínua, foi elaborado um roadmap com os próximos passos para elevar a qualidade e a robustez da aplicação. 🗺️ 
 
-## License
+Melhorias Planejadas
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Refatoração e Qualidade de Código: Quebrar o método _generateReportForMatch em funções menores e com responsabilidades únicas. 
+
+Infraestrutura e DevOps: Criar um Dockerfile e docker-compose.yml para padronizar os ambientes e configurar um workflow no GitHub Actions para automação de testes. 🐳 
+
+
+Evolução da Arquitetura de Dados (Microserviços): Migrar da abordagem jsonb para um esquema de banco de dados relacional e normalizado para permitir consultas SQL complexas e eficientes. 
+
+Robustez e Escalabilidade: Implementar paginação nos endpoints que retornam listas e adicionar índices estratégicos no banco de dados. ⚡ 
+
+Segurança da API (OAuth 2.0): Proteger todos os endpoints utilizando um fluxo de autenticação e autorização robusto com Passport.js. 🔒 
+
+Débitos Técnicos Identificados
+Atualização de Dependências: Durante a instalação com npm install, foram identificados diversos pacotes depreciados (eslint, glob, supertest, etc.). É necessário planejar a atualização destes pacotes para versões mais recentes e suportadas para garantir a segurança e a estabilidade do projeto a longo prazo.
