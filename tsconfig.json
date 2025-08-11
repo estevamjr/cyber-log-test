@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS", // Alterado para CommonJS para ser consistente com o 'require()'
+    "moduleResolution": "node", // Alterado para 'node' para a resolução de módulos CommonJS
+    "resolveJsonModule": true, // Adicionado para importar arquivos JSON se necessário
+    "esModuleInterop": true,
+    "isolatedModules": false, // Alterado para 'false' para permitir arquivos de módulo único
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "allowJs": true,
+    "checkJs": false
+  }
+}
