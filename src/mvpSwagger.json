@@ -1,0 +1,315 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de Processamento de Logs de Partidas",
+    "description": "API para upload e análise de logs de partidas, gerando rankings e estatísticas detalhadas.",
+    "version": "1.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/logs/upload": {
+      "post": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Processa um arquivo de log de partida",
+        "description": "Faz o upload de um arquivo de log (.txt) e, opcionalmente, uma estrutura de times para processamento e persistência dos dados.",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "file",
+            "description": "O arquivo de log a ser processado.",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "in": "formData",
+            "name": "teams",
+            "description": "String JSON com a estrutura de times para cálculo de friendly fire. Ex: '{\"TeamA\": [\"Player1\"], \"TeamB\": [\"Player2\"]}'",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Criado com sucesso",
+            "schema": {
+              "$ref": "#/definitions/UploadSuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logs/matches": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Retorna uma lista resumida de todas as partidas",
+        "description": "Retorna uma lista de todas as partidas processadas, incluindo o ID interno do banco e o matchId original do log.",
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MatchSummary"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logs/matches/{id}": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Retorna o relatório detalhado de uma partida específica",
+        "description": "Retorna o relatório completo e detalhado de uma única partida, utilizando o matchId extraído do log.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "O matchId da partida a ser consultada.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/Match"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logs/ranking/global": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Retorna o ranking global de jogadores",
+        "description": "Agrega os dados de todas as partidas para gerar um ranking global baseado no total de frags e mortes.",
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GlobalRankingPlayer"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/logs/matches/mvp": {
+      "get": {
+        "tags": [
+          "Logs"
+        ],
+        "summary": "Retorna o ranking de MVP baseado em prêmios",
+        "description": "Calcula um ranking de 'Most Valuable Players' baseado em um sistema de pontuação por prêmios (Awards) conquistados em todas as partidas.",
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/MVPReportPlayer"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "MatchReport": {
+      "type": "object",
+      "properties": {
+        "total_kills": {
+          "type": "integer"
+        },
+        "players": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ranking": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "player": {
+                "type": "string"
+              },
+              "frags": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "deaths": {
+          "type": "object",
+          "description": "Objeto com a contagem de mortes de cada jogador."
+        },
+        "streaks": {
+          "type": "object",
+          "description": "Objeto com a maior sequência de abates de cada jogador."
+        },
+        "awards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "player": {
+                "type": "string"
+              },
+              "award": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "winner_favorite_weapon": {
+          "type": "string"
+        }
+      }
+    },
+    "Match": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "matchId": {
+          "type": "string"
+        },
+        "report": {
+          "$ref": "#/definitions/MatchReport"
+        }
+      }
+    },
+    "UploadSuccessResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "matches": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Match"
+          }
+        }
+      }
+    },
+    "MatchSummary": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "matchId": {
+          "type": "string"
+        }
+      }
+    },
+    "GlobalRankingPlayer": {
+      "type": "object",
+      "properties": {
+        "player": {
+          "type": "string"
+        },
+        "total_frags": {
+          "type": "integer"
+        },
+        "total_deaths": {
+          "type": "integer"
+        }
+      }
+    },
+    "MVPReportPlayer": {
+      "type": "object",
+      "properties": {
+        "player": {
+          "type": "string"
+        },
+        "score": {
+          "type": "integer"
+        },
+        "awards_summary": {
+          "type": "object",
+          "description": "Sumário da quantidade de cada prêmio conquistado."
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "statusCode": {
+          "type": "integer",
+          "example": 400
+        },
+        "message": {
+          "type": "string",
+          "example": "Bad Request"
+        }
+      }
+    }
+  }
+}
