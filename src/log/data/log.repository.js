@@ -2,6 +2,7 @@ const { Injectable } = require('@nestjs/common');
 const { InjectRepository } = require('@nestjs/typeorm');
 const { Repository } = require('typeorm');
 const { Match } = require('./log.entity');
+import { Retry } from '../../common/decorators/retry.decorator';
 
 @Injectable()
 class LogRepository {
@@ -17,6 +18,7 @@ class LogRepository {
     return this.repository.save(newMatches);
   }
 
+  @Retry({ retries: 3, delay: 200 })
   async getAllMatchReports() {
     return this.repository.find();
   }

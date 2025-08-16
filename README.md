@@ -117,3 +117,16 @@ Segurança da API (OAuth 2.0): Proteger todos os endpoints utilizando um fluxo d
 
 Débitos Técnicos Identificados
 Atualização de Dependências: Durante a instalação com npm install, foram identificados diversos pacotes depreciados (eslint, glob, supertest, etc.). É necessário planejar a atualização destes pacotes para versões mais recentes e suportadas para garantir a segurança e a estabilidade do projeto a longo prazo.
+
+#### Evolução da Arquitetura para Grande Escala (Big Data)
+A arquitetura atual, com seu `LogService` atuando como orquestrador, é ideal para um volume de dados na casa dos milhões de registros. No entanto, para escalar a solução para a casa dos **bilhões de registros**, seria necessária uma mudança de paradigma, saindo do cálculo "on-the-fly" (em tempo real) para uma abordagem de **Processamento em Lote (Batch Processing)**.
+
+A estratégia para essa escala seria:
+
+1.  **Pipeline de ETL (Extract, Transform, Load):** Implementar um processo em background, utilizando ferramentas open source como **Apache Spark**, que rodaria periodicamente (ex: de hora em hora).
+2.  **Separação de Bancos (OLTP e OLAP):**
+    * Manter o **PostgreSQL** como nosso banco transacional (OLTP), otimizado para a escrita rápida dos relatórios de partidas individuais.
+    * O pipeline de ETL leria os dados do PostgreSQL, realizaria as agregações massivas (como o ranking global) e salvaria os resultados já consolidados em um **banco de dados analítico (OLAP)**, otimizado para leitura, como o **ClickHouse** ou **Apache Druid**.
+3.  **Consumo Otimizado:** A API deixaria de calcular os rankings. Em vez disso, faria uma consulta simples e extremamente rápida ao banco analítico (OLAP) para buscar os dados já pré-calculados, entregando a resposta ao usuário em milissegundos, independentemente do volume de dados processado em background.
+
+Esta abordagem garante que a experiência do usuário permaneça performática, movendo o custo computacional do processamento pesado para uma infraestrutura de dados assíncrona e dedicada.
