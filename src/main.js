@@ -1,10 +1,15 @@
-require('dotenv').config();
+require('reflect-metadata');
+require('module-alias/register');
 
 const { NestFactory } = require('@nestjs/core');
-const AppModule = require('./app.module.js');
+const { AppModule } = require('./app.module');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  app.enableShutdownHooks();
+
   await app.listen(3000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

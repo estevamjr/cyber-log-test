@@ -1,0 +1,16 @@
+# Dependências locais que não devem ser copiadas para a imagem
+node_modules
+npm-debug.log
+
+# Pasta de build (se existir localmente, não deve ser copiada)
+dist
+
+# Histórico e configurações do Git
+.git
+.gitignore
+
+# Configurações do VS Code e outros editores
+.vscode
+
+# Arquivos de ambiente e segredos
+.env
