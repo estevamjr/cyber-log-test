@@ -1,10 +1,5 @@
 /**
  * Calcula os prêmios (awards) de uma partida com base nas estatísticas finais.
- *
- * @param {Array<{player: string, frags: number}>} ranking - O array de ranking já calculado e ordenado.
- * @param {object} deaths - Um objeto no formato { 'Player1': 2, 'Player2': 0 }.
- * @param {object} killTimestamps - Um objeto no formato { 'Player1': [360, 380, 400, ...], ... }.
- * @returns {Array<{player: string, award: string}>} Um array contendo todos os prêmios concedidos.
  */
 export function calculateAwards(ranking, deaths, killTimestamps) {
   const awards = [];
@@ -30,7 +25,7 @@ export function calculateAwards(ranking, deaths, killTimestamps) {
       for (let i = 0; i <= times.length - 5; i++) {
         if (times[i + 4] - times[i] < 60) {
           spreeAwardedPlayers.add(player);
-          break; // O jogador já ganhou o prêmio, podemos pular para o próximo.
+          break;
         }
       }
     }

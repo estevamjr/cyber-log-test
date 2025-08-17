@@ -1,7 +1,5 @@
 /**
  * Agrega os dados de todas as partidas para gerar um relatório de MVP.
- * @param {Array<Match>} allMatches - A lista de todas as partidas do banco.
- * @returns {Array<{player: string, score: number, awards_summary: object}>} O relatório de MVP.
  */
 export function aggregateMvpReport(allMatches) {
   if (!allMatches || allMatches.length === 0) {
@@ -9,8 +7,6 @@ export function aggregateMvpReport(allMatches) {
   }
   
   const awardPoints = { 'FLAWLESS_VICTORY': 5, 'KILLING_SPREE': 3 };
-
-  // console.time('Agregação MVP Report (Arch Refatorada com reduce)');
 
   const playerAwards = allMatches.reduce((acc, match) => {
     if (match.report && match.report.awards) {
@@ -26,8 +22,6 @@ export function aggregateMvpReport(allMatches) {
     return acc;
   }, {});
   
-  // console.timeEnd('Agregação MVP Report (Arch Refatorada com reduce)');
-
   const championsRanking = Object.entries(playerAwards).map(([player, data]) => ({
     player,
     score: data.score,
