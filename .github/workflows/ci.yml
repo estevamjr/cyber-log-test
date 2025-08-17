@@ -1,0 +1,37 @@
+# .github/workflows/ci.yml
+
+name: CI Pipeline
+
+# Define os gatilhos: este workflow roda a cada push ou pull request
+# para as branches 'main' e 'develop'.
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  # Define um "job" chamado "build-and-test"
+  build-and-test:
+    # Usa a versão mais recente do Ubuntu (Linux) para rodar o job
+    runs-on: ubuntu-latest
+
+    steps:
+      # Passo 1: Clona o seu repositório para dentro da máquina virtual
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Passo 2: Configura o ambiente Node.js
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      # Passo 3: Instala as dependências do projeto
+      - name: Install dependencies
+        run: npm install
+
+      # Passo 4: Roda a suíte de testes
+      - name: Run tests
+        run: npm test -- --verbose

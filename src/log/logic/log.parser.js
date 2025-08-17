@@ -12,30 +12,20 @@ export function parseLogLine(line) {
   const killMatch = trimmedLine.match(killRegex);
   if (killMatch) {
     const [, time, killer, victim, weapon] = killMatch;
-    return {
-      type: 'PLAYER_KILL',
-      payload: { time, killer, victim, weapon },
-    };
+    return { type: 'PLAYER_KILL', payload: { time, killer, victim, weapon } };
   }
 
   const worldKillMatch = trimmedLine.match(worldKillRegex);
   if (worldKillMatch) {
-    const [, time, victim] = worldKillMatch; 
-    return {
-      type: 'WORLD_KILL',
-      payload: { victim },
-    };
+    const [, , victim] = worldKillMatch;
+    return { type: 'WORLD_KILL', payload: { victim } };
   }
   
   const newMatch = trimmedLine.match(matchIdRegex)
   if (newMatch) {
       const [, matchId] = newMatch
-      return {
-          type: "NEW_MATCH",
-          payload: { matchId }
-      }
+      return { type: "NEW_MATCH", payload: { matchId } }
   }
 
-  // Se nenhum padrão conhecido for encontrado, retorna null.
   return null;
 }

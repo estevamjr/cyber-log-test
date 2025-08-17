@@ -1,18 +1,17 @@
 const { Injectable, Inject, forwardRef } = require('@nestjs/common');
 
-// --- IMPORTAÇÕES DE TODA A LÓGICA DE NEGÓCIO EXTERNA ---
-import { calculateAwards } from './logic/awards.calculator';
-import { calculateRanking } from './logic/ranking.calculator';
-import { MatchProcessor } from './logic/match.processor';
-import { parseLogLine } from './logic/log.parser';
-import { aggregateGlobalRanking } from './logic/global-ranking.aggregator';
-import { aggregateMvpReport } from './logic/mvp-report.aggregator';
-import { splitLogIntoMatchChunks } from './logic/log.splitter';
+import { calculateAwards } from '@/log/logic/awards.calculator';
+import { calculateRanking } from '@/log/logic/ranking.calculator';
+import { MatchProcessor } from '@/log/logic/match.processor';
+import { parseLogLine } from '@/log/logic/log.parser';
+import { aggregateGlobalRanking } from '@/log/logic/global-ranking.aggregator';
+import { aggregateMvpReport } from '@/log/logic/mvp-report.aggregator';
+import { splitLogIntoMatchChunks } from '@/log/logic/log.splitter';
 
 @Injectable()
 class LogService {
   constructor(
-    @Inject(forwardRef(() => require('./data/log.repository').LogRepository))
+    @Inject(forwardRef(() => require('@/log/data/log.repository').LogRepository))
     logRepository,
   ) {
     this.repository = logRepository;

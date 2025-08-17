@@ -7,7 +7,6 @@ import { parseLogLine } from './log.parser';
 export class MatchProcessor {
   constructor(playerTeamMap) {
     this.playerTeamMap = playerTeamMap;
-
     this.kills = {};
     this.deaths = {};
     this.players = new Set();
@@ -17,17 +16,9 @@ export class MatchProcessor {
     this.killsByWeapon = {};
   }
 
-  /**
-   * Método público principal. Recebe uma linha de log bruta,
-   * a interpreta e atualiza o estado interno da partida.
-   * @param {string} line - A linha de texto do log.
-   */
   processLine(line) {
     const event = parseLogLine(line);
-
-    if (!event) {
-      return; 
-    }
+    if (!event) return;
 
     switch (event.type) {
       case 'PLAYER_KILL':
@@ -39,9 +30,6 @@ export class MatchProcessor {
     }
   }
 
-  /**
-   * Retorna o estado final processado da partida.
-   */
   getProcessedState() {
     return {
       kills: this.kills,
@@ -53,19 +41,12 @@ export class MatchProcessor {
     };
   }
 
-  /**
-   * Calcula o total de abates da partida, desconsiderando friendly fire.
-   */
   calculateTotalKills() {
     return Object.values(this.kills)
       .filter(k => k > 0)
       .reduce((a, b) => a + b, 0);
   }
 
-  /**
-   * Calcula a arma favorita do vencedor com base no ranking.
-   * @param {Array<{player: string, frags: number}>} ranking 
-   */
   calculateWinnerFavoriteWeapon(ranking) {
     if (ranking.length === 0 || ranking[0].frags <= 0) {
       return null;
@@ -79,13 +60,8 @@ export class MatchProcessor {
     return null;
   }
 
-  /**
-   * Processa um evento de abate de jogador. (Método Privado)
-   * @param {object} payload - O payload do evento: { time, killer, victim, weapon }.
-   */
   #processPlayerKill(payload) {
     const { time, killer, victim, weapon } = payload;
-    
     this.players.add(killer);
     this.players.add(victim);
 
@@ -101,24 +77,17 @@ export class MatchProcessor {
     }
 
     this.deaths[victim] = (this.deaths[victim] || 0) + 1;
-
     this.currentStreaks[killer] = (this.currentStreaks[killer] || 0) + 1;
     if (this.currentStreaks[killer] > (this.highestStreaks[killer] || 0)) {
       this.highestStreaks[killer] = this.currentStreaks[killer];
     }
     this.currentStreaks[victim] = 0;
-
     this.killTimestamps[killer] = this.killTimestamps[killer] || [];
     this.killTimestamps[killer].push(this.#timeToSeconds(time));
   }
 
-  /**
-   * Processa um evento de morte pelo <WORLD>. (Método Privado)
-   * @param {object} payload - O payload do evento: { victim }.
-   */
   #processWorldKill(payload) {
     const { victim } = payload;
-
     this.players.add(victim);
     this.deaths[victim] = (this.deaths[victim] || 0) + 1;
     this.currentStreaks[victim] = 0;
