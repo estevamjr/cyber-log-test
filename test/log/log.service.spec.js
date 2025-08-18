@@ -3,6 +3,7 @@ const { getRepositoryToken } = require('@nestjs/typeorm');
 const { LogService } = require('@/log/log.service');
 const { Match } = require('@/log/data/log.entity');
 
+
 describe('LogService', () => {
   let logService;
   let mockRepository;
