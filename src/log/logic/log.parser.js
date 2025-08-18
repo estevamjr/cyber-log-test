@@ -6,7 +6,7 @@ const worldKillRegex = /(\d{2}:\d{2}:\d{2}) - <WORLD> killed (.+) by/;
  * Analisa (parse) uma única linha de um arquivo de log.
  * Retorna um objeto de evento estruturado se a linha for relevante, caso contrário, retorna null.
  */
-export function parseLogLine(line) {
+function parseLogLine(line) {
   const trimmedLine = line.trim();
 
   const killMatch = trimmedLine.match(killRegex);
@@ -29,3 +29,5 @@ export function parseLogLine(line) {
 
   return null;
 }
+
+module.exports = { parseLogLine };

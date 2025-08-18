@@ -1,7 +1,7 @@
 /**
  * Agrega os dados de todas as partidas para gerar um relatório de MVP.
  */
-export function aggregateMvpReport(allMatches) {
+function aggregateMvpReport(allMatches) {
   if (!allMatches || allMatches.length === 0) {
     return { message: 'Nenhuma partida encontrada para gerar o relatório MVP.' };
   }
@@ -39,3 +39,5 @@ export function aggregateMvpReport(allMatches) {
 
   return championsRanking;
 }
+
+module.exports = { aggregateMvpReport };

@@ -1,7 +1,7 @@
 /**
  * Calcula os prêmios (awards) de uma partida com base nas estatísticas finais.
  */
-export function calculateAwards(ranking, deaths, killTimestamps) {
+function calculateAwards(ranking, deaths, killTimestamps) {
   const awards = [];
   if (!ranking || ranking.length === 0) {
     return awards;
@@ -37,3 +37,5 @@ export function calculateAwards(ranking, deaths, killTimestamps) {
 
   return awards;
 }
+
+module.exports = { calculateAwards };

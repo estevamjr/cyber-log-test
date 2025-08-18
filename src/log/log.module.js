@@ -8,7 +8,7 @@ const { LogController } = require('./log.controller');
 @Module({
   imports: [TypeOrmModule.forFeature([Match])],
   controllers: [LogController],
-  providers: [LogService, LogRepository],
+  providers: [LogService],
   exports: [LogService],
 })
 class LogModule {}

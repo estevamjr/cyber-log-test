@@ -1,10 +1,10 @@
-import { parseLogLine } from './log.parser';
+const { parseLogLine } = require('./log.parser');
 
 /**
  * Classe responsável por processar as linhas de log de uma partida,
  * aplicando as regras de negócio para construir o estado final da partida.
  */
-export class MatchProcessor {
+class MatchProcessor {
   constructor(playerTeamMap) {
     this.playerTeamMap = playerTeamMap;
     this.kills = {};
@@ -99,3 +99,5 @@ export class MatchProcessor {
     return hours * 3600 + minutes * 60 + seconds;
   }
 }
+
+module.exports = { MatchProcessor };

@@ -1,20 +1,22 @@
-const { Injectable, Inject, forwardRef } = require('@nestjs/common');
+const { Injectable } = require('@nestjs/common');
+const { InjectRepository } = require('@nestjs/typeorm');
+const { Match } = require('./data/log.entity');
 
-import { calculateAwards } from '@/log/logic/awards.calculator';
-import { calculateRanking } from '@/log/logic/ranking.calculator';
-import { MatchProcessor } from '@/log/logic/match.processor';
-import { parseLogLine } from '@/log/logic/log.parser';
-import { aggregateGlobalRanking } from '@/log/logic/global-ranking.aggregator';
-import { aggregateMvpReport } from '@/log/logic/mvp-report.aggregator';
-import { splitLogIntoMatchChunks } from '@/log/logic/log.splitter';
+const { calculateAwards } = require('@/log/logic/awards.calculator');
+const { calculateRanking } = require('@/log/logic/ranking.calculator');
+const { MatchProcessor } = require('@/log/logic/match.processor');
+const { parseLogLine } = require('@/log/logic/log.parser');
+const { aggregateGlobalRanking } = require('@/log/logic/global-ranking.aggregator');
+const { aggregateMvpReport } = require('@/log/logic/mvp-report.aggregator');
+const { splitLogIntoMatchChunks } = require('@/log/logic/log.splitter');
 
 @Injectable()
 class LogService {
   constructor(
-    @Inject(forwardRef(() => require('@/log/data/log.repository').LogRepository))
-    logRepository,
+    @InjectRepository(Match) 
+    repository, 
   ) {
-    this.repository = logRepository;
+    this.repository = repository; 
   }
 
   async processAndSaveLog(logContent, teams = {}) {
@@ -25,23 +27,23 @@ class LogService {
       .filter(report => report !== null);
 
     if (reports.length > 0) {
-      return this.repository.saveMatchReports(reports);
+      return this.repository.save(reports);
     }
     return [];
   }
 
   async getGlobalRanking() {
-    const allMatches = await this.repository.getAllMatchReports();
+    const allMatches = await this.repository.find();
     return aggregateGlobalRanking(allMatches);
   }
   
   async getMVReport() {
-    const allMatches = await this.repository.getAllMatchReports();
+    const allMatches = await this.repository.find();
     return aggregateMvpReport(allMatches);
   }
 
   async getAllMatchesSummary() {
-    const matches = await this.repository.getAllMatchReports();
+    const matches = await this.repository.find();
     return matches.map(match => ({
       id: match.id,
       matchId: match.matchId
@@ -49,7 +51,7 @@ class LogService {
   }
 
   async getMatchById(matchId) {
-    return this.repository.findMatchById(matchId);
+    return this.repository.findOneBy({ matchId: matchId });
   }
 
   _buildPlayerTeamMap(teams) {
