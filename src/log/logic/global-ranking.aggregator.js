@@ -1,7 +1,7 @@
 /**
  * Agrega os dados de todas as partidas para gerar um ranking global.
  */
-export function aggregateGlobalRanking(allMatches) {
+function aggregateGlobalRanking(allMatches) {
   const playerStats = allMatches.reduce((stats, match) => {
     const { report } = match;
     if (report.ranking) {
@@ -22,13 +22,17 @@ export function aggregateGlobalRanking(allMatches) {
     return stats;
   }, {});
 
-  const rankingArray = Object.entries(playerStats).map(([player, stats]) => ({
-    player,
-    total_frags: stats.total_frags,
-    total_deaths: stats.total_deaths,
-  }))
+  const rankingArray = Object.entries(playerStats)
+    .map(([player, stats]) => ({
+      player,
+      total_frags: stats.total_frags,
+      total_deaths: stats.total_deaths,
+    }))
     .filter(p => p.total_frags > 0 || p.total_deaths > 0);
 
   rankingArray.sort((a, b) => b.total_frags - a.total_frags);
+  
   return rankingArray;
 }
+
+module.exports = { aggregateGlobalRanking };

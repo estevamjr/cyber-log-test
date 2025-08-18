@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "module": "CommonJS", // Alterado para CommonJS para ser consistente com o 'require()'
-    "moduleResolution": "node", // Alterado para 'node' para a resolução de módulos CommonJS
-    "resolveJsonModule": true, // Adicionado para importar arquivos JSON se necessário
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "isolatedModules": false, // Alterado para 'false' para permitir arquivos de módulo único
+    "isolatedModules": false,
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -22,6 +22,11 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "allowJs": true,
-    "checkJs": false
+    "checkJs": false,
+    "paths": { 
+      "@/*": [
+        "src/*"
+      ]
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { parseLogLine } from './log.parser';
+const { parseLogLine } = require('./log.parser');
 
 /**
  * Divide o conteúdo de um arquivo de log em objetos de partida,
@@ -6,7 +6,7 @@ import { parseLogLine } from './log.parser';
  * @param {string} logContent - O conteúdo completo do arquivo de log.
  * @returns {Array<{matchId: string, lines: Array<string>}>} Um array de objetos de partida.
  */
-export function splitLogIntoMatchChunks(logContent) {
+function splitLogIntoMatchChunks(logContent) {
   const logLines = logContent.split('\n');
   const matches = [];
   let currentMatchLines = [];
@@ -43,3 +43,5 @@ export function splitLogIntoMatchChunks(logContent) {
 
   return matches;
 }
+
+module.exports = { splitLogIntoMatchChunks };

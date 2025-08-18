@@ -14,15 +14,15 @@ const { Match } = require('./log/data/log.entity.js');
       database: process.env.POSTGRES_DB,
       entities: [Match],
       synchronize: true,
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      // ssl: {
+      //   rejectUnauthorized: false,
+      // },
     }),
-    LogModule,
+    LogModule, 
   ],
   controllers: [],
   providers: [],
 })
 class AppModule {}
 
-module.exports = AppModule;
+module.exports = {  AppModule };
