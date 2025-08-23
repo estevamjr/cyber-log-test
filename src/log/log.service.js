@@ -18,7 +18,7 @@ class LogService {
   ) {
     this.repository = repository; 
   }
-
+  
   async processAndSaveLog(logContent, teams = {}) {
     const matchLogChunks = splitLogIntoMatchChunks(logContent);
     
