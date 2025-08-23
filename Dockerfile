@@ -1,18 +1,16 @@
-# Usa a imagem Node.js 18, versão Alpine por ser leve
-FROM node:20-alpine
+FROM node:22-alpine
 
-# Define o diretório de trabalho dentro do container
+RUN apk add --no-cache bash
+
 WORKDIR /usr/src/app
 
-# Copia os arquivos de definição de pacotes
 COPY package*.json ./
-
-# Instala TODAS as dependências, incluindo as de desenvolvimento
-# Otimizado para usar o cache do npm se o package-lock não mudar
 RUN npm install
 
-# Muda para um usuário não-root para mais segurança
-USER node
+COPY . .
 
-# O comando do docker-compose.yml irá sobrepor este, mas é bom ter um padrão.
-CMD [ "npm", "run", "start:dev" ]
+RUN chown -R node:node .
+
+#USER node
+
+EXPOSE 3000

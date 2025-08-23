@@ -1,0 +1,10 @@
+{
+    "name": "Nomad Test (Dev Container)",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "api",
+    "workspaceFolder": "/usr/src/app",
+	"runArgs": [
+        "--no-mount", "type=bind,source=/tmp/vscode-wayland-${USER}-,target=/tmp/vscode-wayland-${USER}-"
+    ]
+    // "forwardPorts": [8080]
+}
