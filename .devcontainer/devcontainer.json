@@ -1,5 +1,5 @@
 {
-    "name": "Nomad Test (Dev Container)",
+    "name": "Cyber Log Test (Dev Container)",
     "dockerComposeFile": "../docker-compose.yml",
     "service": "api",
     "workspaceFolder": "/usr/src/app",

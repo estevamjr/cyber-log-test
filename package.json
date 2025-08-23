@@ -18,8 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "husky",
-    "push:test": "npm test && git push origin develop"
+    "push:test": "npm test && git push origin develop --no-verify"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.6",
@@ -46,7 +45,6 @@
     "eslint": "^9.33.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.0.0",
-    "husky": "^9.1.7",
     "jest": "^30.0.5",
     "nodemon": "^3.1.10",
     "prettier": "^3.0.0",
