@@ -1,132 +1,134 @@
-Markdown
+🚀 CyberLogTest: Processador de Logs de Partidas
+1. Visão Geral do Projeto
+Bem-vindo ao CyberLogTest! Esta é uma aplicação backend robusta, construída com NestJS, projetada para processar e analisar logs de partidas de jogos. A aplicação é totalmente containerizada com Docker e utiliza um fluxo de trabalho de desenvolvimento profissional com VS Code e Dev Containers, garantindo um ambiente consistente e portátil para todos os desenvolvedores.
 
-# 🚀 Processador de Logs de Partidas
+Este documento é o seu guia completo para configurar e rodar o projeto.
 
-## 1. Visão Geral do Projeto
-Esta é uma aplicação backend robusta, construída com NestJS (Node.js), projetada para ser uma solução completa no processamento e análise de logs de partidas de jogos de tiro em primeira pessoa (FPS). [cite_start]🎮 
+2. Pré-requisitos Essenciais
+Para garantir um ambiente de desenvolvimento estável, é crucial ter as seguintes ferramentas instaladas e configuradas na sua máquina Windows:
 
-A API permite o upload de arquivos de log, processa os dados para extrair estatísticas detalhadas de cada partida e dos jogadores, persiste esses relatórios em um banco de dados PostgreSQL e expõe os resultados através de múltiplos endpoints para consulta e análise. É ideal para integração com ferramentas de Business Intelligence (BI) ou frontends interativos. [cite_start]📊 
+Git: Para controle de versão. Download aqui.
 
-O projeto foi desenvolvido com foco em Test-Driven Development (TDD), garantindo a qualidade e a corretude das regras de negócio. Isso inclui desde o cálculo de rankings por partida até a implementação de funcionalidades complexas como "kill streaks", "awards" (prêmios por desempenho) e a detecção de "friendly fire". [cite_start]✅ 
+Docker Desktop: A base da nossa containerização. Ele gerencia o WSL 2 automaticamente. Download aqui.
 
-## 2. Tecnologias Utilizadas
-Um olhar sobre as ferramentas que impulsionam este projeto:
+WSL 2 (Subsistema Windows para Linux): Essencial para a performance do Docker no Windows.
 
-* [cite_start]**Backend:** Node.js, NestJS 
-* [cite_start]**Banco de Dados:** PostgreSQL (gerenciado via Supabase) 🐘 
-* [cite_start]**ORM:** TypeORM 
-* [cite_start]**Testes:** Jest (para testes unitários e E2E), Supertest 
-* [cite_start]**Variáveis de Ambiente:** Dotenv 
+Instalação: Abra o PowerShell como Administrador e execute: wsl --install.
 
-## 3. Como Executar o Projeto
-Siga estes passos para colocar a aplicação em funcionamento em sua máquina local:
+Distribuição: Recomendamos instalar o Ubuntu a partir da Microsoft Store.
 
-### Pré-requisitos
-Certifique-se de ter instalado:
+VS Code: Nosso editor de código. Download aqui.
 
-* [cite_start]Node.js (v18 ou superior) 🟢 
-* [cite_start]npm (gerenciador de pacotes do Node.js) 
-* [cite_start]Uma instância de banco de dados PostgreSQL (local ou em nuvem como Supabase) 
+Extensões do VS Code (Instalar dentro do VS Code):
 
-### Passos para Instalação
-1.  **Clonar o repositório:**
-    ```bash
-    git clone [URL_DO_SEU_REPOSITORIO]
-    cd [NOME_DA_PASTA]
-    ```
+Dev Containers (ID: ms-vscode-remote.remote-containers): A extensão principal que gerencia nosso ambiente.
 
-2.  **Instalar dependências:**
-    ```bash
-    npm install
-    ```
-    *Nota: Devido a conflitos em dependências de desenvolvimento, pode ser necessário usar o comando `npm install --legacy-peer-deps`.*
+WSL (ID: ms-vscode-remote.remote-wsl): Permite ao VS Code se conectar ao ambiente Linux.
 
-3.  **Configurar Variáveis de Ambiente:**
-    Crie um arquivo chamado `.env` na raiz do projeto e preencha com suas credenciais do banco de dados:
-    ```env
-    POSTGRES_HOST=seu_host_do_banco
-    POSTGRES_PORT=5432
-    POSTGRES_USER=seu_usuario
-    POSTGRES_PASSWORD=sua_senha
-    POSTGRES_DB=seu_banco
-    ```
+3. Configuração Inicial (Primeira Vez)
+Siga estes passos exatamente para configurar o projeto do zero.
 
-4.  **Iniciar a aplicação em modo de desenvolvimento:**
-    ```bash
-    npm run start:dev
-    ```
-    O servidor estará disponível em `http://localhost:3000`. 🚀
+Passo 1: Clone o Projeto no Local Correto
+Para garantir o funcionamento do hot-reload e a melhor performance, o projeto deve ser clonado dentro do sistema de arquivos do WSL, e não no seu C:\Users\....
 
-### Rodando os Testes
-Para garantir a integridade e a qualidade do código, execute a suíte de testes unitários e E2E:
-```bash
+Abra o terminal do Ubuntu (pelo Menu Iniciar).
+
+Navegue para sua pasta "home" e clone o repositório:
+
+cd ~
+git clone https://github.com/estevamjr/cyber-log-test.git
+
+Passo 2: Crie e Configure o Arquivo .env
+As credenciais do banco de dados são gerenciadas por um arquivo .env.
+
+Ainda no terminal do Ubuntu, navegue para a pasta do projeto:
+
+cd cyber-log-test
+
+Copie o arquivo de exemplo para criar seu arquivo .env local:
+
+cp .env.example .env
+
+Abra o projeto no VS Code (Modo WSL): Execute o comando abaixo. Uma nova janela do VS Code será aberta, conectada ao seu ambiente Linux.
+
+code .
+
+No VS Code, abra o arquivo .env que você acabou de criar e altere a senha POSTGRES_PASSWORD=changeme para uma senha segura de sua escolha.
+
+Passo 3: Inicie o Ambiente Dev Container
+Esta é a etapa final, onde o VS Code irá construir e iniciar os contêineres Docker.
+
+Com o projeto aberto no VS Code (no modo WSL, com a barra de status verde), abra a paleta de comandos (Ctrl+Shift+P).
+
+Digite e selecione a opção Dev Containers: Reopen in Container.
+
+Aguarde. O VS Code irá construir a imagem Docker e iniciar os serviços api e db. Este processo pode demorar alguns minutos na primeira vez.
+
+Quando terminar, seu ambiente estará 100% no ar. O terminal integrado do VS Code estará conectado ao contêiner da api, e a aplicação iniciará automaticamente com npm run start:dev.
+
+4. Fluxo de Trabalho Diário
+Iniciar o Ambiente
+Abra a pasta do projeto (que está no WSL) com o VS Code.
+
+Use o comando Dev Containers: Reopen in Container.
+
+Aguarde a aplicação iniciar automaticamente no terminal integrado.
+
+Hot-Reload
+O hot-reload funciona automaticamente. Simplesmente salve uma alteração em qualquer arquivo na pasta src/, e a aplicação será reiniciada no terminal do VS Code.
+
+Executando Testes e Comandos Git
+Use o terminal integrado do VS Code (que já está dentro do contêiner Linux) para todos os comandos, como:
+
 npm test
-4. Endpoints da API
-Explore as funcionalidades da API através dos seguintes endpoints. A documentação interativa (Swagger UI) estará disponível em http://localhost:3000/api-docs após a aplicação ser iniciada. 📖 
 
+git status, git add, git commit
 
-POST /logs/upload 
+npm run push:test (para rodar os testes e enviar ao GitHub com segurança)
 
+Parando o Ambiente
+Para parar os contêineres e liberar os recursos da sua máquina, abra um terminal fora do VS Code (PowerShell) na pasta do projeto e execute:
 
-GET /logs/matches 
+docker-compose down
 
+5. Guia de Resolução de Problemas (Troubleshooting)
+Se encontrar problemas, é provável que já os tenhamos resolvido antes.
 
-GET /logs/matches/:id 
+Erro: EADDRINUSE: address already in use (Porta em Uso)
 
+Causa: Um processo de uma sessão anterior não foi encerrado corretamente.
 
-GET /logs/ranking/global 
+Solução: Feche o VS Code. Na sua barra de tarefas do Windows, clique com o botão direito no ícone do Docker e selecione "Quit Docker Desktop". Aguarde 30 segundos e inicie tudo novamente. Não use taskkill, pois isso pode desestabilizar o WSL.
 
+Erro: Could not connect to WSL ou o Dev Container não sobe
 
-GET /logs/matches/mvp 
+Causa: O serviço do WSL no Windows travou.
 
-5. Documentação da API (Swagger)
-Para uma documentação completa, o projeto inclui duas especificações no formato Swagger 2.0, que foram movidas para a pasta /docs para melhor organização:
+Solução: Abra o PowerShell como Administrador e execute wsl --shutdown. Aguarde o Docker Desktop reiniciar e tente novamente.
 
-docs/mvpSwagger.json (Versão Atual):
-Este arquivo representa a API como ela está atualmente implementada e funcional no repositório. Ele documenta todos os endpoints, parâmetros e modelos de dados que foram desenvolvidos e testados. 
+Erro: Exit code 137 durante a construção
 
-docs/roadmapSwagger.json (Visão Futura):
-Este arquivo serve como um documento de design técnico, descrevendo a visão para a evolução da API. Ele incorpora as melhorias planejadas no "Roadmap de Melhorias Técnicas", incluindo segurança OAuth 2.0, paginação e tratamento de erros detalhado. 
+Causa: Falta de memória RAM alocada para o Docker/WSL.
 
-6. Decisões de Arquitetura
-Este projeto foi cuidadosamente construído com base em princípios sólidos de engenharia de software, visando a qualidade, manutenibilidade e testabilidade do código. 🏗️ 
+Solução: Crie um arquivo .wslconfig em C:\Users\seu_nome e adicione o conteúdo abaixo para aumentar a memória para 8GB. Depois, rode wsl --shutdown.
 
+[wsl2]
+memory=8GB
 
-Arquitetura em Camadas (SOLID): A aplicação é rigidamente dividida em camadas claras (Controller, Service, Repository), seguindo o Princípio da Responsabilidade Única. 
+6. Roadmap de Pendências
+Robustez e Escalabilidade:
 
+[Pendente ⏳] Implementar paginação e índices de banco de dados.
 
-Test-Driven Development (TDD): Todo o desenvolvimento da lógica de negócio foi guiado por testes, com cobertura para testes unitários e de ponta-a-ponta (E2E). 
+Segurança da API:
 
-Modelo de Dados Flexível: A decisão estratégica de armazenar o relatório completo de cada partida em uma única coluna jsonb no PostgreSQL oferece uma flexibilidade notável, permitindo a adição de novas métricas sem a necessidade de migrações complexas no esquema do banco. 🔄 
+[Pendente ⏳] Proteger endpoints com autenticação (ex: OAuth 2.0).
 
-7. Roadmap de Melhorias Técnicas
-Como parte de uma visão de produto contínua, foi elaborado um roadmap com os próximos passos para elevar a qualidade e a robustez da aplicação. 🗺️ 
+Débitos Técnicos:
 
-Melhorias Planejadas
+[Pendente ⏳] Atualizar dependências obsoletas.
+[Pendente ⏳] Erro 'listen' mesmo com microservice funcionando corretamente.
 
-Refatoração e Qualidade de Código: Quebrar o método _generateReportForMatch em funções menores e com responsabilidades únicas. 
+Evolução da Arquitetura:
 
-Infraestrutura e DevOps: Criar um Dockerfile e docker-compose.yml para padronizar os ambientes e configurar um workflow no GitHub Actions para automação de testes. 🐳 
-
-
-Evolução da Arquitetura de Dados (Microserviços): Migrar da abordagem jsonb para um esquema de banco de dados relacional e normalizado para permitir consultas SQL complexas e eficientes. 
-
-Robustez e Escalabilidade: Implementar paginação nos endpoints que retornam listas e adicionar índices estratégicos no banco de dados. ⚡ 
-
-Segurança da API (OAuth 2.0): Proteger todos os endpoints utilizando um fluxo de autenticação e autorização robusto com Passport.js. 🔒 
-
-Débitos Técnicos Identificados
-Atualização de Dependências: Durante a instalação com npm install, foram identificados diversos pacotes depreciados (eslint, glob, supertest, etc.). É necessário planejar a atualização destes pacotes para versões mais recentes e suportadas para garantir a segurança e a estabilidade do projeto a longo prazo.
-
-#### Evolução da Arquitetura para Grande Escala (Big Data)
-A arquitetura atual, com seu `LogService` atuando como orquestrador, é ideal para um volume de dados na casa dos milhões de registros. No entanto, para escalar a solução para a casa dos **bilhões de registros**, seria necessária uma mudança de paradigma, saindo do cálculo "on-the-fly" (em tempo real) para uma abordagem de **Processamento em Lote (Batch Processing)**.
-
-A estratégia para essa escala seria:
-
-1.  **Pipeline de ETL (Extract, Transform, Load):** Implementar um processo em background, utilizando ferramentas open source como **Apache Spark**, que rodaria periodicamente (ex: de hora em hora).
-2.  **Separação de Bancos (OLTP e OLAP):**
-    * Manter o **PostgreSQL** como nosso banco transacional (OLTP), otimizado para a escrita rápida dos relatórios de partidas individuais.
-    * O pipeline de ETL leria os dados do PostgreSQL, realizaria as agregações massivas (como o ranking global) e salvaria os resultados já consolidados em um **banco de dados analítico (OLAP)**, otimizado para leitura, como o **ClickHouse** ou **Apache Druid**.
-3.  **Consumo Otimizado:** A API deixaria de calcular os rankings. Em vez disso, faria uma consulta simples e extremamente rápida ao banco analítico (OLAP) para buscar os dados já pré-calculados, entregando a resposta ao usuário em milissegundos, independentemente do volume de dados processado em background.
-
-Esta abordagem garante que a experiência do usuário permaneça performática, movendo o custo computacional do processamento pesado para uma infraestrutura de dados assíncrona e dedicada.
+[Visão Futura 🚀] Migrar para um esquema de dados totalmente relacional.
